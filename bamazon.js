@@ -15,6 +15,7 @@ var connection = mysql.createConnection({
   database: "bamazon"
 });
 
+
 const shop = function () {
 
   connection.query('SELECT * FROM products', function (err, res) {
@@ -48,6 +49,7 @@ const shop = function () {
           return false;
         }
       }
+
     }]).then(function (answer) {
 
       //display chosen product
@@ -68,8 +70,9 @@ const shop = function () {
         else {
           console.log("\nThank you for your purchase!\n");
           //update quantity amount
+          // var query = 'UPDATE products SET stock_quantity = ' + (res[answer.item].stock_quantity - quantity) + ' WHERE item_id = ' + item;
           var query = "UPDATE products SET stock_quantity = ? WHERE item_id = ? ";
-          var query = connection.query(query, [res[answer.item].stock_quantity, answer.item], function (err, res) {
+          var query = connection.query(query, [res[answer.item].stock_quantity - answer.quantity, answer.item], function (err, res) {
             if (err) throw err;
             console.log(query.sql);
           })
